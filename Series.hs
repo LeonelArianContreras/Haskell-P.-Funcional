@@ -91,15 +91,17 @@ estaCancelada unaSerie = (==True) . cancelada $ unaSerie
 
 type Produccion = Serie -> Serie
 
-producirEfectivamente :: [Produccion] -> [Serie] -> [Serie]
-producirEfectivamente producciones series = map (mayorEfectividad producciones) series
+-- Función para comparar dos productores
+maxByBienestar :: Produccion -> Produccion -> Serie -> Produccion
+maxByBienestar productor1 productor2 unaSerie
+    | bienestarTotal (productor1 unaSerie) > bienestarTotal (productor2 unaSerie) = productor1
+    | otherwise = productor2
 
-mayorEfectividad :: [Produccion] -> Produccion
-mayorEfectividad [unProductor] unaSerie = unProductor unaSerie
-mayorEfectividad (productor1 : productores) unaSerie 
-    | bienestarTotal (productor1 unaSerie) > bienestarTotal (head productores $ unaSerie) = productor1 unaSerie --- Para mi es repeticion de codigo, no de logica
-    | otherwise = mayorEfectividad productores unaSerie
-    
+-- Función mayorEfectividad que encuentra el productor más efectivo
+mayorEfectividad :: [Produccion] -> Serie -> Serie
+mayorEfectividad productores unaSerie = foldl1 (\prod1 prod2 -> maxByBienestar prod1 prod2 unaSerie) productores unaSerie
+
+
 
 --- Punto 5 ---
 
