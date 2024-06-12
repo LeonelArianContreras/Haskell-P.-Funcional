@@ -87,7 +87,7 @@ bienestarTotal unaSerie
 estaCancelada :: Serie -> Bool
 estaCancelada unaSerie = (==True) . cancelada $ unaSerie
 
---- Punto 4 ---
+--- Punto 4 ---<
 
 type Produccion = Serie -> Serie
 
